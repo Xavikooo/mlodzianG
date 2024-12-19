@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logowanie - Klinika Ostatniej Szansy</title>
+    <link rel="stylesheet" href="styles.css">
+    <script defer src="login.js"></script>
+    <script src="app.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Logowanie do Systemu Rejestracji Wizyt</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona Główna</a></li>
+                <li><a href="registration.html">Rejestracja Pacjenta</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Logowanie</h2>
+            <form id="loginForm">
+                <label for="username">Nazwa użytkownika:</label>
+                <input type="text" id="username" name="username" required>
+    
+                <label for="password">Hasło:</label>
+                <input type="password" id="password" name="password" required>
+    
+                <button type="submit">Zaloguj się</button>
+            </form>
+    </main>
+    <footer>
+        <p><strong>Klinika Ostatniej Szansy</strong></p>
+        <p>Godziny otwarcia: Poniedziałek - Piątek: 8:00 - 16:00</p>
+        <p>Sobota i Niedziela: Zamknięte</p>
+    </footer>
+</body>
+</html>

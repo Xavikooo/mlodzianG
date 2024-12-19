@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pl">
+    <script src="script.js" defer></script>
+    <script src="app.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Panel Lekarza - Klinika Ostatniej Szansy</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header>
+        <h1>Panel Lekarza</h1>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Strona Główna</a></li>
+                <li><a href="login.html">Wyloguj</a></li>
+            </ul>
+        </nav>
+    </header>
+    <main>
+        <div class="container">
+            <h2>Rejestracja wizyt</h2>
+            <form id="appointmentForm">
+                <label for="patientName">Imię i nazwisko pacjenta:</label>
+                <input type="text" id="patientName" name="patientName" required>
+
+                <label for="appointmentTime">Termin wizyty (YYYY-MM-DD HH:MM):</label>
+                <input type="datetime-local" id="appointmentTime" name="appointmentTime" required>
+
+                <button type="submit">Zarejestruj wizytę</button>
+            </form>
+            <div id="appointments">
+                <h3>Zarejestrowane wizyty:</h3>
+            </div>
+        </div>
+    </main>
+    <footer>
+        <p><strong>Klinika Ostatniej Szansy</strong></p>
+        <p>Godziny otwarcia: Poniedziałek - Piątek: 8:00 - 16:00</p>
+        <p>Sobota i Niedziela: Zamknięte</p>
+    </footer>
+</body>
+</html>

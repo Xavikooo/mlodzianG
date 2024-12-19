@@ -1,0 +1,6 @@
+
+-- 1.Logowanie i rejestracja pacjenta
+-- 2.Logowanie lekarza
+-- 3.Szyfrowanie haseł
+-- 4.Wybór terminu z dokładnością co pół godziny
+-- 5.Od 8 do 16 pon do pt 
