@@ -23,7 +23,17 @@ const config = {
         trustServerCertificate: true
     }
 };
-
+// Testowanie połączenia z bazą
+async function executeQuery() {
+    try {
+        const pool = await sql.connect(config);
+        const result = await pool.request().query('SELECT * FROM daneDoLogowania');
+        console.log(result.recordset);
+        sql.close();
+    } catch (err) {
+        console.error('Błąd połączenia z SQL Server:', err);
+    }
+};
 // Middleware
 app.use(bodyParser.json());
 
@@ -110,17 +120,67 @@ app.post('/api/login', async (req, res) => {
     }
 });
 
-// Testowanie połączenia z bazą
-async function executeQuery() {
+// Endpoint do rejestracji wizyty
+app.post('/api/registerAppointment', async (req, res) => {
+    const { patientName, appointmentTime } = req.body;
+
+    try {
+        await registerAppointment(patientName, new Date(appointmentTime));
+        res.status(200).send('Wizyta została zarejestrowana pomyślnie!');
+    } catch (err) {
+        console.error(err);
+        res.status(500).send('Wystąpił błąd podczas rejestrowania wizyty.');
+    }
+});
+
+// Endpoint do pobierania wizyt
+app.get('/api/appointments', async (req, res) => {
     try {
         const pool = await sql.connect(config);
-        const result = await pool.request().query('SELECT * FROM daneDoLogowania');
-        console.log(result.recordset);
-        sql.close();
+        const result = await pool.request().query('SELECT * FROM wizyty');
+        res.status(200).json(result.recordset);
     } catch (err) {
-        console.error('Błąd połączenia z SQL Server:', err);
+        console.error(err);
+        res.status(500).send('Wystąpił błąd podczas pobierania wizyt.');
+    }
+});
+
+
+// Obsługa rejestracji wizyty
+async function registerAppointment(patientName, appointmentTime) {
+    try {
+        const pool = await sql.connect(config);
+        console.log('Połączono z bazą danych.');
+
+        const result = await pool.request()
+            .input('Imie_nazwisko', sql.NVarChar, patientName)
+            .query('SELECT Login FROM daneDoLogowania WHERE Imie_nazwisko = @Imie_nazwisko');
+
+        if (result.recordset.length === 0) {
+            console.error('Nie znaleziono pacjenta:', patientName);
+            throw new Error('Nie znaleziono pacjenta w bazie danych.');
+        }
+
+        const login = result.recordset[0].Login;
+        console.log(`Znaleziony login: ${login}`);
+
+        await pool.request()
+            .input('Imie_nazwisko', sql.NVarChar, patientName)
+            .input('Login', sql.NVarChar, login)
+            .input('Data', sql.DateTime, appointmentTime)
+            .query('INSERT INTO wizyty (Imie_nazwisko, Login, Data) VALUES (@Imie_nazwisko, @Login, @Data)');
+
+        console.log('Wizyta została zarejestrowana pomyślnie!');
+    } catch (err) {
+        console.error('Błąd w registerAppointment:', err); 
+        throw err;
     }
 }
+
+
+module.exports = { registerAppointment };
+
+
 
 executeQuery();
 
