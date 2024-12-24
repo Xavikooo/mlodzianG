@@ -44,7 +44,8 @@ async function fetchAppointments() {
 
         appointments.forEach(appointment => {
             const div = document.createElement('div');
-            div.textContent = `${appointment.Imie_nazwisko} - ${new Date(appointment.Data).toLocaleString()}`;
+            div.textContent = `${appointment.Imie_nazwisko} - ${new Date(appointment.data).toLocaleString()}`;
+            console.log(appointment.data);
             appointmentsDiv.appendChild(div);
         });
     } catch (err) {

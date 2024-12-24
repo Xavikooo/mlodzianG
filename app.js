@@ -23,17 +23,7 @@ const config = {
         trustServerCertificate: true
     }
 };
-// Testowanie połączenia z bazą
-async function executeQuery() {
-    try {
-        const pool = await sql.connect(config);
-        const result = await pool.request().query('SELECT * FROM daneDoLogowania');
-        console.log(result.recordset);
-        sql.close();
-    } catch (err) {
-        console.error('Błąd połączenia z SQL Server:', err);
-    }
-};
+
 // Middleware
 app.use(bodyParser.json());
 
@@ -169,6 +159,7 @@ async function registerAppointment(patientName, appointmentTime) {
             .input('Login', sql.NVarChar, login)
             .input('Data', sql.DateTime, appointmentTime)
             .query('INSERT INTO wizyty (Imie_nazwisko, Login, Data) VALUES (@Imie_nazwisko, @Login, @Data)');
+            
 
         console.log('Wizyta została zarejestrowana pomyślnie!');
     } catch (err) {
@@ -194,3 +185,25 @@ const port = 3001;
 app.listen(port, () => {
     console.log(`Serwer działa na porcie ${port}`);
 });
+
+// Test pobierania z wizyty
+async function executeQuery() {
+    try {
+        const pool = await sql.connect(config);
+        const result = await pool.request().query('SELECT * FROM wizyty');
+        sql.close();
+    } catch (err) {
+        console.error('Błąd połączenia z SQL Server:', err);
+    }   
+};
+// Test loginów 
+async function executeQuery() {
+    try {
+        const pool = await sql.connect(config);
+        const result = await pool.request().query('SELECT * FROM daneDoLogowania');
+        console.log(result.recordset);
+        sql.close();
+    } catch (err) {
+        console.error('Błąd połączenia z SQL Server:', err);
+    }
+};
